@@ -1,0 +1,12 @@
+@startuml
+skinparam shadowing false
+rectangle "Вопрос\nPOST /ask" as request
+rectangle "MiniLM + Neo4j\nдо 3 статей" as search
+rectangle "Аннотации + связи\nиз найденных статей" as context
+rectangle "Qwen через Ollama" as llm
+rectangle "Ответ" as answer
+request --> search
+search --> context
+context --> llm
+llm --> answer
+@enduml

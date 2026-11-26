@@ -1,0 +1,13 @@
+@startuml
+skinparam shadowing false
+rectangle "Аннотации arXiv" as arxiv
+rectangle "papers.json" as papers
+rectangle "Qwen: сущности\nи связи" as extract
+rectangle "triplets.jsonl" as triplets
+database "Neo4j: статьи,\nсвязи и индекс" as graph
+arxiv --> papers : сбор
+papers --> extract
+extract --> triplets
+triplets --> graph : загрузка графа
+papers --> graph : тексты и векторы
+@enduml

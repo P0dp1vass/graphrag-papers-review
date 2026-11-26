@@ -1,0 +1,13 @@
+@startuml
+skinparam shadowing false
+rectangle "Один поиск\nодни и те же статьи" as search
+rectangle "Вопрос + аннотации" as plain
+rectangle "Вопрос + аннотации\n+ связи" as enriched
+rectangle "Два вызова одной модели\nпо очереди" as llm
+rectangle "Сравнение ответов" as compare
+search --> plain
+search --> enriched
+plain --> llm
+enriched --> llm
+llm --> compare
+@enduml
