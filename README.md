@@ -10,7 +10,7 @@
 
 | Шаг | Что открыть | Что сказать |
 |---|---|---|
-| **Корпус и загрузка** | [Схема подготовки](diagrams/00-prepare.svg), [`triplets.jsonl`](data/triplets.jsonl) — поиск по ID, [`load_graph.py`](code/load_graph.py) — `_mention` и `_add_relation` | «Из arXiv беру заголовки и аннотации из `cs.CL`. Qwen заранее извлекает сущности и тройки. `MENTIONS` — кто упомянут в статье, `source_ids` — откуда извлекли конкретную связь». |
+| **Корпус и загрузка** | [Схема подготовки](diagrams/00-prepare.svg) → [скриншоты Neo4j: граф и таблица](RESULTS_RU.md#что-получилось-при-извлечении) → [`load_graph.py`](code/load_graph.py): `_mention`, `_add_relation` | «Qwen извлекает тройки из аннотаций заранее. Покажу одну статью: где упоминание, где источник ребра и как экстрактор перепутал “вводит” с “улучшает”». |
 | **Вход API** | [`app.py`](code/app.py) — `AskRequest`, `AskResponse`, `lifespan`, `ask_endpoint` | «FastAPI принимает JSON и передаёт вопрос в `qa.ask`. До `yield` проверяется Neo4j и загружается MiniLM. Драйвер не создаётся заново для каждого вопроса». |
 | **Поиск статей** | [Схема запроса](diagrams/01-request.svg), [`qa.py`](code/qa.py) — `prepare_context`, [`retrieval.py`](code/retrieval.py) — `retrieve_papers` и `rank_candidates` | «Вектор ищет по смыслу. Название `RAG-FGO` дополнительно ищется в заголовках. По ID удаляю дубли, совпавшее название важнее косинусного балла». |
 | **Связи и ответ** | [`qa.py`](code/qa.py) — оба условия `WHERE` в `graph_context`, затем `build_prompt` | «Берём связь, только если источник — одна из найденных статей. Аннотация — первичный текст, связь — подсказка. Граф не добавляет новые статьи». |
