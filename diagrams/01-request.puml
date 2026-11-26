@@ -1,12 +1,18 @@
 @startuml
+title Путь одного вопроса
+left to right direction
+skinparam monochrome true
 skinparam shadowing false
-rectangle "Вопрос\nPOST /ask" as request
-rectangle "MiniLM + Neo4j\nдо 3 статей" as search
-rectangle "Аннотации + связи\nиз найденных статей" as context
-rectangle "Qwen через Ollama" as llm
-rectangle "Ответ" as answer
-request --> search
+skinparam roundcorner 12
+skinparam defaultFontSize 17
+skinparam ranksep 30
+
+rectangle "<b>Вход API</b>\nВопрос → POST /ask" as api
+rectangle "<b>Поиск статей</b>\nВектор MiniLM + название\n→ до трёх статей" as search
+rectangle "<b>Сборка контекста</b>\nАннотации + связи\nиз этих же статей" as context
+rectangle "<b>Ответ</b>\nQwen читает контекст\n→ текст для клиента" as answer
+
+api --> search
 search --> context
-context --> llm
-llm --> answer
+context --> answer
 @enduml

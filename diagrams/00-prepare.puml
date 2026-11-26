@@ -1,13 +1,20 @@
 @startuml
+title Подготовка базы · до вопросов
+skinparam monochrome true
 skinparam shadowing false
-rectangle "Аннотации arXiv" as arxiv
-rectangle "papers.json" as papers
-rectangle "Qwen: сущности\nи связи" as extract
-rectangle "triplets.jsonl" as triplets
-database "Neo4j: статьи,\nсвязи и индекс" as graph
-arxiv --> papers : сбор
-papers --> extract
-extract --> triplets
-triplets --> graph : загрузка графа
-papers --> graph : тексты и векторы
+skinparam roundcorner 12
+skinparam defaultFontSize 17
+skinparam nodesep 48
+
+rectangle "<b>Сбор с arXiv</b>\nЗаголовки и аннотации → papers.json" as corpus
+rectangle "<b>Qwen извлекает связи</b>\nСущности и тройки → triplets.jsonl" as extract
+rectangle "<b>Загрузчик строит граф</b>\nУзлы, рёбра и source_ids" as load
+rectangle "<b>Добавляем тексты и векторы</b>\nАннотации + векторы MiniLM" as index
+database "<b>Готовая база Neo4j</b>\nСтатьи, граф и индекс paper_vec" as graph
+
+corpus -down-> extract
+corpus -down-> index : аннотации по ID
+extract -down-> load
+load -down-> index : созданные Paper
+index -down-> graph
 @enduml

@@ -1,13 +1,20 @@
 @startuml
+title Что даёт добавление связей?
+skinparam monochrome true
 skinparam shadowing false
-rectangle "Один поиск\nодни и те же статьи" as search
-rectangle "Вопрос + аннотации" as plain
-rectangle "Вопрос + аннотации\n+ связи" as enriched
-rectangle "Два вызова одной модели\nпо очереди" as llm
-rectangle "Сравнение ответов" as compare
-search --> plain
-search --> enriched
-plain --> llm
-enriched --> llm
-llm --> compare
+skinparam roundcorner 12
+skinparam defaultFontSize 17
+skinparam nodesep 48
+
+rectangle "<b>Ищем статьи один раз</b>\nОдин вопрос, одни и те же статьи" as search
+rectangle "<b>Без графа</b>\nВопрос + аннотации" as plain
+rectangle "<b>С графом</b>\nТе же данные + связи" as enriched
+rectangle "<b>Одна и та же Qwen</b>\nДва вызова последовательно" as llm
+rectangle "<b>Сравниваем два ответа</b>\nСмысл, ссылки и время" as compare
+
+search -down-> plain
+search -down-> enriched
+plain -down-> llm
+enriched -down-> llm
+llm -down-> compare
 @enduml
